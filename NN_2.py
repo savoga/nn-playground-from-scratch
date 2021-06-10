@@ -38,19 +38,19 @@ class NeuralNetwork():
         X_train = X_train.T # (n_features, n_samples)
         y_train = y_train.T # (n_features, 1)
 
-        np.random.seed(seed=1)
-        self.weights_1 = np.random.normal(0, 1, (self.nodes_hidden, n_features))
-        self.bias_1 = np.random.normal(0, 1, (1, 1))
-        self.weights_2 = np.random.normal(0, 1, (1, self.nodes_hidden))
-        self.bias_2 = np.random.normal(0, 1, (1, 1))
+        np.random.seed(seed=2)
+        self.weights_1 = np.random.randn(self.nodes_hidden, n_features)*0.01
+        self.bias_1 = 0 #np.random.normal(0, 1, (1, 1))
+        self.weights_2 = np.random.randn(1, self.nodes_hidden)*0.01
+        self.bias_2 = 0 #np.random.normal(0, 1, (1, 1))
 
         for i in range(n_iterations):
 
             # Forward propagation
-            a1 = self.sigmoid(np.dot(self.weights_1, X_train) + self.bias_1)
+            a1 = np.tanh(np.dot(self.weights_1, X_train) + self.bias_1)
             a2 = self.sigmoid(np.dot(self.weights_2, a1) + self.bias_2)
             cost = self.cost(a2, y_train)
-            if i % 10000 == 0:
+            if i % 100 == 0:
                 print('---------- iteration {} ----------'.format(i+1))
                 print('cost: {}'.format(cost))
             # For tracking purposes
@@ -62,15 +62,16 @@ class NeuralNetwork():
             dz2 = a2-y_train
             dw2 = (1/n_samples)*np.dot(dz2,a1.T)
             db2 = (1/n_samples)*np.sum(dz2)
-            dz1 = np.multiply(np.dot(self.weights_2.T,dz2),np.multiply(a1,1-a1))
+            dz1 = np.multiply(np.dot(self.weights_2.T,dz2),1-np.power(a1,2))
             dw1 = (1/n_samples)*np.dot(dz1,X_train.T)
-            db1 = (1/n_samples)*np.sum(a1-y_train)
+            db1 = (1/n_samples)*np.sum(dz1, axis = 1, keepdims = True)
 
             # Update parameters
-            self.weights_2 = self.weights_2 - self.learning_rate*dw2
-            self.bias_2 = self.bias_2 - self.learning_rate*db2
             self.weights_1 = self.weights_1 - self.learning_rate*dw1
             self.bias_1 = self.bias_1 - self.learning_rate*db1
+            self.weights_2 = self.weights_2 - self.learning_rate*dw2
+            self.bias_2 = self.bias_2 - self.learning_rate*db2
+            # print('test')
 
         return self.y_iterations
 
@@ -84,28 +85,38 @@ class NeuralNetwork():
 #                               cluster_std=0.3,
 #                               center_box=(0,5),
 #                               random_state=3)
-# X_train, y_train = make_circles(n_samples=100,
-#                               random_state=3)
-X_train, y_train = make_moons(n_samples=500,
+X_train, y_train = make_circles(n_samples=100,
                               random_state=3,
-                              noise=.05)
-plt.scatter(X_train[:,0], X_train[:,1])
+                              noise=0.2,
+                              factor=0.2)
+# X_train, y_train = make_moons(n_samples=500,
+#                               random_state=3,
+#                               noise=.05)
+# plt.scatter(X_train[:,0], X_train[:,1])
+# plt.show()
+
+plt.figure()
+X_positive = X_train[np.where(y_train==1)]
+plt.scatter(X_positive[:,0], X_positive[:,1], color='red')
+X_negative = X_train[np.where(y_train==0)]
+plt.scatter(X_negative[:,0], X_negative[:,1], color='blue')
 plt.show()
 
 # Good visual
+# make_moons
 # n_samples=500, noise=.05, n_iterations=170K, learning_rate=0.75, nodes_hidden=5
 # n_samples = 500, noise=.2, n_iterations=170K, learning_rate=1.2, nodes_hidden=5
 
-n_iterations = 170000
-nn = NeuralNetwork(learning_rate=0.75, nodes_hidden=5)
+n_iterations = 1000
+nn = NeuralNetwork(learning_rate=1.2, nodes_hidden=3)
 y_iterations = nn.train(X_train, y_train, n_iterations)
 
 # X_test, y_test = make_blobs(n_samples=100, n_features=2, centers=2)
 # y_pred_proba = nn.predict(X_test)
 # y_pred = [1 if proba>0.5 else 0 for proba in y_pred_proba.flatten()]
 
-for i in [n_iterations-1]:#range(n_iterations):
-    if True:# i%10000==0:
+for i in range(n_iterations):#[n_iterations-1]:#
+    if i%100==0:
         plt.figure()
         y_iter = y_iterations[i]
         X_positive = X_train[np.where(y_iter==1)]
