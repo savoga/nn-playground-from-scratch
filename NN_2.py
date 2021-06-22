@@ -115,6 +115,8 @@ y_iterations = nn.train(X_train, y_train, n_iterations)
 # y_pred_proba = nn.predict(X_test)
 # y_pred = [1 if proba>0.5 else 0 for proba in y_pred_proba.flatten()]
 
+# Warning!! The below allows to visualize the LEARNING phase, i.e
+# the adjustments of the weights step by step
 for i in range(n_iterations):#[n_iterations-1]:#
     if i%100==0:
         plt.figure()
@@ -130,4 +132,5 @@ for i in range(n_iterations):#[n_iterations-1]:#
 Site:
     difference one layer and two layers (input layer doesn't count)
     image for 2 layers and 2 hidden nodes
+    No train / test samples?? How about in Andrew Ng's version?
 '''
