@@ -3,6 +3,8 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 
 import pandas as pd
+import numpy as np
+
 import dash_core_components as dcc
 from dash.exceptions import PreventUpdate
 
@@ -11,7 +13,6 @@ import plotly.express as px
 import utils as ut
 import model as md
 
-global df_data
 df_data = pd.DataFrame(columns=['x','y','cluster'])
 fig_data = px.scatter(df_data, x="x", y="y")
 
@@ -65,7 +66,6 @@ app.layout = dbc.Container(
                     ),
 
             dcc.Store(id='intermediate-value')
-            # TODO: IT SEEMS DATAFRAMES CANNOT BE STORED
 
             ]
         )
@@ -88,29 +88,16 @@ def generateData(button_generate, button_nn, df_data_stored, radio_pattern):
         fig_data = px.scatter(df_data, x="x", y="y", color='cluster_start')
         fig_data.update_traces(marker=dict(size=12, line=dict(width=2, color='DarkSlateGrey')))
         fig_data.update_layout(coloraxis_showscale=False)
-        return df_data, fig_data
+        return df_data.to_json(date_format='iso', orient='split'), fig_data
     elif button_id=='button-nn':
-        print('NN button pressed')
-        df_data = df_data_stored.copy()
+        df_data = pd.read_json(df_data_stored, orient='split')
         nn = md.NeuralNetwork(learning_rate=1.2, nodes_hidden=3)
-        y_iterations = nn.train(df_data[['x','y']], df_data['cluster'], 1000)
+        y_iterations = nn.train(np.array(df_data[['x','y']]), np.array(df_data['cluster']), 1000)
         df_data['cluster'] = y_iterations[len(y_iterations)-1]
         fig_data = px.scatter(df_data, x="x", y="y", color='cluster')
         fig_data.update_traces(marker=dict(size=12, line=dict(width=2, color='DarkSlateGrey')))
         fig_data.update_layout(coloraxis_showscale=False)
-        return None, fig_data
-
-# @app.callback(
-#      dash.dependencies.Output('graph-data', 'figure'),
-#      [dash.dependencies.Input('button-nn', 'value')])
-# def runNeuralNetwork(fig_data):
-#     nn = md.NeuralNetwork(learning_rate=1.2, nodes_hidden=3)
-#     y_iterations = nn.train(df_data[['x','y']], df_data['cluster'], 1000)
-#     df_data['cluster'] = y_iterations[len(y_iterations)-1]
-#     fig_data = px.scatter(df_data, x="x", y="y", color='cluster')
-#     fig_data.update_traces(marker=dict(size=12, line=dict(width=2, color='DarkSlateGrey')))
-#     fig_data.update_layout(coloraxis_showscale=False)
-#     return fig_data
+        return df_data.to_json(date_format='iso', orient='split'), fig_data
 
 if __name__ == '__main__':
     app.run_server(debug=True)
