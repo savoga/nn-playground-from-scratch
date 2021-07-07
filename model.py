@@ -64,7 +64,6 @@ class NeuralNetwork():
             self.bias_1 = self.bias_1 - self.learning_rate*db1
             self.weights_2 = self.weights_2 - self.learning_rate*dw2
             self.bias_2 = self.bias_2 - self.learning_rate*db2
-            # print('test')
 
         return self.y_iterations
 

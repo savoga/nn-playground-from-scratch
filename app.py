@@ -22,7 +22,7 @@ server = app.server
 app.layout = dbc.Container(
             [
             html.H1(
-                    children="Neural network playgroung from scratch",
+                    children="2-layer neural network playgroung from scratch",
                     style={'textAlign': 'center'}
                     ),
 
@@ -57,6 +57,20 @@ app.layout = dbc.Container(
                         dcc.Graph(id="graph-data", figure=fig_data)
                     ]),
 
+            dcc.Markdown('Hidden units'),
+
+            dcc.RadioItems(
+                id='radio-units',
+                options=[
+                    {'label': '1', 'value': 1},
+                    {'label': '2', 'value': 2},
+                    {'label': '3', 'value': 3},
+                    {'label': '4', 'value': 4}
+                    ],
+                value=1,
+                labelStyle={'display': 'block'}
+                    ),
+
             dbc.Button(
                     "Run neural network",
                     id="button-nn",
@@ -75,9 +89,10 @@ app.layout = dbc.Container(
       dash.dependencies.Output('graph-data', 'figure')],
      [dash.dependencies.Input('button-generate', 'n_clicks'),
        dash.dependencies.Input('button-nn', 'n_clicks'),
+       dash.dependencies.Input('radio-units', 'value'),
        dash.dependencies.Input('intermediate-value','data')],
      [dash.dependencies.State('radio-data', 'value')])
-def generateData(button_generate, button_nn, df_data_stored, radio_pattern):
+def generateData(button_generate, button_nn, nb_hh, df_data_stored, radio_pattern):
     if button_generate is None:
         raise PreventUpdate
     ctx = dash.callback_context
@@ -91,7 +106,7 @@ def generateData(button_generate, button_nn, df_data_stored, radio_pattern):
         return df_data.to_json(date_format='iso', orient='split'), fig_data
     elif button_id=='button-nn':
         df_data = pd.read_json(df_data_stored, orient='split')
-        nn = md.NeuralNetwork(learning_rate=1.2, nodes_hidden=3)
+        nn = md.NeuralNetwork(learning_rate=1.2, nodes_hidden=nb_hh)
         y_iterations = nn.train(np.array(df_data[['x','y']]), np.array(df_data['cluster']), 1000)
         df_data['cluster'] = y_iterations[len(y_iterations)-1]
         fig_data = px.scatter(df_data, x="x", y="y", color='cluster')

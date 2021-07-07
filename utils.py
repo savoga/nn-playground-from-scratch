@@ -15,17 +15,14 @@ def generateData(data_pattern='blobs'):
         X_train, y_train = make_blobs(n_samples=100,
                               n_features=2,
                               centers=2,
-                              cluster_std=0.3,
-                              center_box=(0,5),
-                              random_state=3)
+                              cluster_std=0.2,
+                              center_box=(0,5))
     elif data_pattern=='circles':
         X_train, y_train = make_circles(n_samples=100,
-                              random_state=3,
                               noise=0.2,
                               factor=0.2)
     elif data_pattern=='moons':
         X_train, y_train = make_moons(n_samples=100,
-                              random_state=3,
                               noise=.05)
     df_data['x'] = X_train[:,0]
     df_data['y'] = X_train[:,1]
