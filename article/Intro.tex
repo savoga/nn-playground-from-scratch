@@ -1,18 +1,20 @@
 \section{Intro}
 
-Neural networks became increasingly popular in the last few years as showed by the research topics of the recent years (https://www.kdnuggets.com/2021/05/winning-machine-learning-competition.html). The main advantage of those models is that they can learn complex structure and are highly customizable. However, one significant drawback is their poor explanability power. Neural networks are often categorized in the so-called "black box models".
-Fortunately, there are some very good tutorials on learning how a neural network actually works. Today, every data scientist know the tutorials of Andrew Ng (https://www.coursera.org/learn/neural-networks-deep-learning). \\
+Neural networks became increasingly popular in the last few years as showed by the \href{https://www.kdnuggets.com/2021/05/winning-machine-learning-competition.html}{research publication topics}. The main advantage of those models is that they can learn complex structures and are highly customizable. However, one significant drawback is their poor explanability power. Neural networks are often categorized in the so-called "black box models".
+Fortunately, there are some very good tutorials on understanding how a neural network actually works. Today, every data scientist knows the tutorials of \href{https://www.coursera.org/learn/neural-networks-deep-learning}{Andrew Ng}. \\
 
-After having done those tutorials, I personally found out that a 1-layer network is relatively easy to understand, however it gets tricky when increasing the number of layers. This article is an attempt to understand in details the 2-layer neural network through the building of a small playground. We will even publish the playground online! To enjoy fully this article, the reader must be aware of the working of a 1-layer neural network.\\
+After having done those tutorials, I personally found out that a 1-layer network is relatively easy to understand, however it gets tricky when increasing the number of layers. This article is an attempt to understand in details the 2-layer neural network through the building of a small playground. We will even publish the playground online! To enjoy fully this article, the reader must be familiar with the working of a 1-layer neural network.\\
 
-There are already an elephantic number of articles on the maths behind neural networks, so I will focus more on the building app as I believe is more unique. \\
+There are already an elephantic number of articles on the maths behind neural networks, so I will focus more on the building app as I believe is less frequent. \\
 
-As a reminder, a 1-layer network looks like this: \\
+The difference between a 1-layer network and a 2-layer network relies in the following picture: \\
 
-Note that the input layer is usually ignored when counting the layers.
+\begin{center}
+\includegraphics[scale=0.09]{img/nn-layers.jpeg}
+\end{center}
 
-I won't give much more details here, I strongly recommend Andrew Ng's tutorial for more details or this article (https://towardsdatascience.com/everything-you-need-to-know-about-neural-networks-and-backpropagation-machine-learning-made-easy-e5285bc2be3a) for a wrap up.
+Note that the input layer is usually ignored when counting the layers. \\
 
-A 2-layer network looks like this: \\
+I won't give much details on the 1-layer, I strongly recommend Andrew Ng's tutorial for more details or this \href{https://towardsdatascience.com/everything-you-need-to-know-about-neural-networks-and-backpropagation-machine-learning-made-easy-e5285bc2be3a}{article} for a wrap up. \\
 
-Let's now go into deeper details on the working on such an algorithm.
+Let's now go into deeper details on the working on a 2-layer network.
