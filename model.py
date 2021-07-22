@@ -33,9 +33,9 @@ class NeuralNetwork():
 
         np.random.seed(seed=2)
         self.weights_1 = np.random.randn(self.nodes_hidden, n_features)*0.01
-        self.bias_1 = 0 #np.random.normal(0, 1, (1, 1))
+        self.bias_1 = 0
         self.weights_2 = np.random.randn(1, self.nodes_hidden)*0.01
-        self.bias_2 = 0 #np.random.normal(0, 1, (1, 1))
+        self.bias_2 = 0
 
         for i in range(n_iterations):
 
