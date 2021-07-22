@@ -17,6 +17,9 @@ df_data = pd.DataFrame(columns=['x','y','cluster'])
 fig_data = px.scatter(df_data, x="x", y="y")
 
 app = dash.Dash(external_stylesheets=[dbc.themes.FLATLY])
+
+app.title = 'NN playground'
+
 server = app.server
 
 app.layout = dbc.Container(
@@ -93,7 +96,7 @@ app.layout = dbc.Container(
        dash.dependencies.Input('intermediate-value','data')],
      [dash.dependencies.State('radio-data', 'value')])
 def generateData(button_generate, button_nn, nb_hh, df_data_stored, radio_pattern):
-    if button_generate is None:
+    if button_generate is None and button_nn is None:
         raise PreventUpdate
     ctx = dash.callback_context
     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
@@ -113,6 +116,7 @@ def generateData(button_generate, button_nn, nb_hh, df_data_stored, radio_patter
         fig_data.update_traces(marker=dict(size=12, line=dict(width=2, color='DarkSlateGrey')))
         fig_data.update_layout(coloraxis_showscale=False)
         return df_data.to_json(date_format='iso', orient='split'), fig_data
+    raise PreventUpdate
 
 if __name__ == '__main__':
     app.run_server(debug=True)
