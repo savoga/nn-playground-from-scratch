@@ -19,7 +19,7 @@ def generateData(data_pattern='blobs'):
                               center_box=(0,5))
     elif data_pattern=='circles':
         X_train, y_train = make_circles(n_samples=100,
-                              noise=0.2,
+                              noise=0.1,
                               factor=0.2)
     elif data_pattern=='moons':
         X_train, y_train = make_moons(n_samples=100,
