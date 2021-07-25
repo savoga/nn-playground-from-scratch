@@ -1,6 +1,6 @@
 # nn-playground-from-scratch
 
-![](https://github.com/savoga/nn-playground-from-scratch/tree/main/article/img/playground.png)
+![img](https://github.com/savoga/nn-playground-from-scratch/tree/main/article/img/playground.png)
 
 This repo contains the code for the Medium article: 
 
