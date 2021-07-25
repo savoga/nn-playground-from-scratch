@@ -1,5 +1,5 @@
 # nn-playground-from-scratch
-<img src='https://raw.githubusercontent.com/savoga/nn-playground-from-scratch/main/article/img/playground.png' width="200"><img/>
+<img src='https://raw.githubusercontent.com/savoga/nn-playground-from-scratch/main/article/img/playground.png' width="600"><img/>
 
 This repo contains the code for the Medium article: 
 
