@@ -1,9 +1,13 @@
+\begin{center}
+\includegraphics[scale=0.25]{img/playground.png}
+\end{center}
+
 \section{Intro}
 
-Neural networks became increasingly popular as showed by the \href{https://www.kdnuggets.com/2021/05/winning-machine-learning-competition.html}{research publication topics} of the recent years. The main advantage of those models is that they can learn complex structures and are highly customizable. However, one significant drawback is their poor explanability power. Neural networks are often categorized in the so-called "black box models" that are hard to understand.
-Fortunately, there are some very good tutorials on understanding how a neural network actually works. The tutorials of \href{https://www.coursera.org/learn/neural-networks-deep-learning}{Andrew Ng} is an example of some very good materials available online. \\
+Neural networks became increasingly popular as shown by the \href{https://www.kdnuggets.com/wp-content/uploads/Fig2-winning-machine-learning-competition.jpg}{research publication topics} of the recent years. The main advantage of those models is that they can learn complex structures and are highly customizable. However, one significant drawback is their poor explanability power. Neural networks are often categorized in the so-called "black box models" that are hard to understand.
+Fortunately, there are some very good tutorials to understand how a neural network actually works. The tutorials of \href{https://www.coursera.org/learn/neural-networks-deep-learning}{Andrew Ng} is an example of some very good materials available online. \\
 
-I personally find that a 1-layer network is relatively easy to understand, however it gets tricky when increasing the number of layers. This article is an attempt to understand in details the 2-layer neural network through the building of a small playground. We will even publish the playground online! To enjoy fully this article, the reader must be familiar with the working of a 1-layer neural network.\\
+I personally find that a 1-layer network is relatively easy to understand, however it gets tricky when increasing the number of layers. This article is an attempt to understand in details the 2-layer neural network through the building of a small playground. We will even publish the playground \href{https://nn-playground-app.herokuapp.com/}{online}! To enjoy fully this article, the reader must be familiar with the working of a 1-layer neural network.\\
 
 The difference between a 1-layer network and a 2-layer network relies in the following picture: \\
 
@@ -11,7 +15,7 @@ The difference between a 1-layer network and a 2-layer network relies in the fol
 \includegraphics[scale=0.09]{img/nn-layers.jpeg}
 \end{center}
 
-Note that the input layer is usually ignored when counting the layers. \\
+The 2-layer neural network has a hidden layer composed of hidden units (the neurons). Note that the input layer is usually ignored when counting the layers. \\
 
 To understand deeply the 1-layer I strongly recommend Andrew Ng's tutorial for more details or this \href{https://towardsdatascience.com/everything-you-need-to-know-about-neural-networks-and-backpropagation-machine-learning-made-easy-e5285bc2be3a}{article} for a wrap up. \\
 
@@ -19,11 +23,13 @@ Let's now go into deeper details on the working on a 2-layer network.
 
 \section{2-layer NN}
 
-There are already an elephantic number of articles on the maths behind neural networks, so I won't go into much details but rather focus on the points that are, in my view, the most important. \\
+There are already an elephantic number of articles and resources on the maths behind neural networks, so I won't go into much details but rather focus on the points that are, in my view, the most important. \\
 
-For the sake of simplicity, we will use a binary classification. Thus, the labels belong to ($\{0,1\}$). The cost function is:
+For the sake of simplicity, we will use a binary classification to build the playground. Thus, the labels belong to ($\{0,1\}$). The cost function is:
 
 $$\mathcal{L}(y, \widehat{y})=-[y\log(\widehat{y})+(1-y)\log(1-\widehat{y})]$$
+
+Where $y$ is the true label and $\hat y$ its estimation (probability). \\
 
 We notice that the loss function decreases when $y \neq \widehat y$, which is expected as we want to penalize wrong classification.
 
@@ -41,8 +47,9 @@ Then, the backward propagation allows to find how to update the weights in order
 \includegraphics[scale=0.3]{img/NN_2_backward.png}
 \end{center}
 
+Starting from the loss' derivative and thanks to the chain rule, we end up with expressions that tell us how to update the weights to minimize the loss.
 
-For the full details on the derivative computation, I explain everything on \href{https://savoga.github.io/machinelearning/neural-network/}{my website} (hopefully I didn't do too many mistakes).
+For the full details on the derivative computation, I wrote down everything on \href{https://savoga.github.io/machinelearning/neural-network/}{my website} (hopefully I didn't do too many mistakes).
 
 \section{Building the app}
 
@@ -54,21 +61,19 @@ The app will allow the user to provide two types of input: \\
 
 Of course, this is just an example of what types of interactions you can have between the user and the neural network. But as explained in the conclusion of the article, you can add much more parameters! \\
 
-The graphical interfact chosen for the playground is plotly-dash. I am personnaly a big fan of this framework as the \href{https://dash.plotly.com/}{documentation} is quite complete and the \href{https://community.plotly.com/c/dash/16}{community} very active. \\
+The chosen graphical library for the playground is plotly-dash. I am personnaly a big fan of this framework as the \href{https://dash.plotly.com/}{documentation} is quite complete and the \href{https://community.plotly.com/c/dash/16}{community} very active. \\
 
 When developing an app, it is a good practice to separate the modelling part from the graphical part. We will also create a specific module to generate the data. In the end there are 3 python scripts in this app: \\
 
-- utils.py: in this module we simulate data based on the user's preferences \\
+- app.py: this script creates the server and contains everything about the graphical part (buttons, titles etc.) \\
 
 - model.py: here we implement the neural network itself! \\
 
-- app.py: everything about the graphical part (buttons, titles etc.) fall in this script \\
+- utils.py: in this module we simulate data based on the user's preferences \\
 
-\subsection{utils.py}
+\subsection{app.py}
 
-We will allow the user to choose between three types of data shape: blobs, circles and moons. \\
-
-IMAGE  \\
+This module creates the server and handle all graphical components. We specify the location of texts, buttons and the figure. One remark is that we use the same function (also called 'callback functions') for the two buttons. Indeed, it seems plotly-dash doesn't allow to handle different buttons with the same output (= update the graph).
 
 \subsection{model.py}
 
@@ -92,7 +97,16 @@ db1 = (1/n_samples)*np.sum(dz1, axis = 1, keepdims = True)
 
 \end{lstlisting}
 
- I tried to draw a little schema with the right dimensions: \\
+
+The full code can be found on my href{https://github.com/savoga/nn-playground-from-scratch/}{Github repo}. \\
+
+\subsection{utils.py}
+
+We will allow the user to choose between three types of data shape: blobs, circles and moons. \\
+
+\begin{center}
+\includegraphics[scale=0.3]{img/data_generation.png}
+\end{center}
 
 \section{Deployment}
 
@@ -115,23 +129,31 @@ $ git push heroku master
 
 \section{Key insights}
 
-When playing with the app we can already draw some interesting insights:
+When playing with the app we can already draw some interesting insights: \\
 
-- 1 hidden unit gives a linear separation that is especially visible when selecting circles. \\
+- 1 hidden unit gives a linear separation through one line only. This is especially visible when selecting circles. \\
 
-IMAGE \\
+\begin{center}
+\includegraphics[scale=0.3]{img/1-hu-linear.png}
+\end{center}
 
-- 2 hidden units give a better separation \\
+- 2 hidden unit gives a linear separation through two lines and thus allow a better separation. \\
 
-IMAGE \\
+\begin{center}
+\includegraphics[scale=0.3]{img/2-hu-linear.png}
+\end{center}
 
-- 3 hidden units give a perfect separation of the clusters when choosing moons.
+- 3 hidden units perfectly separates the data when the shapes are not convex (moons).
 
-This illustrates the power of neural networks :) You can think of how good they can be when identifying human faces or finger prints!
+\begin{center}
+\includegraphics[scale=0.3]{img/3-hu-moons.png}
+\end{center}
+
+This illustrates the power of neural networks. We can think of how good they can be when identifying human faces or finger prints!
 
 \section{Extensions}
 
-The extension possibilities are endless! You can think about adding checkboxes/buttons so that the user can: \\
+The extension possibilities are endless! You can think about adding checkboxes/buttons so that the user can choose: \\
 
 - the noise (standard deviation) associated with the data generation
 
@@ -143,8 +165,10 @@ The extension possibilities are endless! You can think about adding checkboxes/b
 
 For the last point however, I believe it would require significantly more work, especially if you don't use any neural network library (like tensorflow or pytorch) as we do here. \\
 
-Have fun!
-
 \section{Conclusion}
 
-This is my first article on Medium, I'd be happy to get your feedback with a clap and/or a comment. \\
+For the final version of the playground, check out \href{https://nn-playground-app.herokuapp.com/}{this link}. All the code is available on my \href{https://github.com/savoga/nn-playground-from-scratch/}{github repo}. \\
+
+Have fun! \\
+
+PS: This is my first article on Medium, I'd be happy to get your feedback with a clap and/or a comment. \\

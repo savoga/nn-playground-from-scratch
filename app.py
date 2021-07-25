@@ -95,7 +95,7 @@ app.layout = dbc.Container(
        dash.dependencies.Input('radio-units', 'value'),
        dash.dependencies.Input('intermediate-value','data')],
      [dash.dependencies.State('radio-data', 'value')])
-def generateData(button_generate, button_nn, nb_hh, df_data_stored, radio_pattern):
+def generateData(button_generate, button_nn, nb_hu, df_data_stored, radio_pattern):
     if button_generate is None and button_nn is None:
         raise PreventUpdate
     ctx = dash.callback_context
@@ -109,7 +109,7 @@ def generateData(button_generate, button_nn, nb_hh, df_data_stored, radio_patter
         return df_data.to_json(date_format='iso', orient='split'), fig_data
     elif button_id=='button-nn':
         df_data = pd.read_json(df_data_stored, orient='split')
-        nn = md.NeuralNetwork(learning_rate=1.2, nodes_hidden=nb_hh)
+        nn = md.NeuralNetwork(learning_rate=1.2, nodes_hidden=nb_hu)
         y_iterations = nn.train(np.array(df_data[['x','y']]), np.array(df_data['cluster']), 1000)
         df_data['cluster'] = y_iterations[len(y_iterations)-1]
         fig_data = px.scatter(df_data, x="x", y="y", color='cluster')
