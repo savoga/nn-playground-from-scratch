@@ -1,0 +1,28 @@
+-- ACTIVATION FUNCTIONS --
+Def: what transformation to do on a layer
+NOTE: most of the below comes from https://machinelearningmastery.com/choose-an-activation-function-for-deep-learning/
+Typical activation functions: Sigmoid, Hyperbolic tangent, ReLu
+"hyperbolic tangent typically performs better than the logistic sigmoid"
+Sigmoid was first created, then Tanh
+Activation functions need to be differentiable for the gradient descent to work
+For certain activation functions, some initializers are better adapted
+sigmoid / tanh -> risk of vanishing gradients
+For multilayer perceptron and hidden layers, ReLU activations are mostly used 
+For multilayer perceptron and regression, Linear activations (=identity) are mostly used
+
+-- Initializer --
+
+-- Loss function --
+
+
+
+-- Optimizer --
+
+-- Epochs --
+Number of times the learning algorithm will work through the entire training dataset
+
+---- Iterations ----
+  Number of passes. Each pass using [batch size] number of observations.
+
+------ Batchs ------
+    Number of observations included one forward/backward pass
