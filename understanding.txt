@@ -11,12 +11,16 @@ For multilayer perceptron and hidden layers, ReLU activations are mostly used
 For multilayer perceptron and regression, Linear activations (=identity) are mostly used
 
 -- Initializer --
+A too-large initialization leads to exploding gradients
+A too-small initialization leads to vanishing gradients
 
 -- Loss function --
-
-
+Validation split: the model will set apart a fraction of the training data and will not train on it.
+It will use it to evaluate the loss at the end of each epoch
 
 -- Optimizer --
+Adam: Adaptive moment estimation = RMS + momentum
+use of exponential decaying average of past squared gradients and past gradients
 
 -- Epochs --
 Number of times the learning algorithm will work through the entire training dataset
